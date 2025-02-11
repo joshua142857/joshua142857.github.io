@@ -1,1 +1,49 @@
-"Hello World"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-white shadow-md p-4 fixed w-full top-0 z-50">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Your Name</h1>
+            <ul class="flex space-x-6">
+                <li><a href="#about" class="hover:text-blue-500">About</a></li>
+                <li><a href="#projects" class="hover:text-blue-500">Projects</a></li>
+                <li><a href="#contact" class="hover:text-blue-500">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="about" class="h-screen flex items-center justify-center">
+        <div class="text-center p-6">
+            <h2 class="text-4xl font-bold">Hello, I'm Your Name</h2>
+            <p class="mt-4 text-lg">A passionate developer building awesome projects.</p>
+        </div>
+    </section>
+
+    <section id="projects" class="h-screen bg-gray-200 flex items-center justify-center">
+        <div class="text-center p-6">
+            <h2 class="text-4xl font-bold">Projects</h2>
+            <p class="mt-4 text-lg">Showcase your work here.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="h-screen flex items-center justify-center">
+        <div class="text-center p-6">
+            <h2 class="text-4xl font-bold">Contact</h2>
+            <p class="mt-4 text-lg">Email: your.email@example.com</p>
+        </div>
+    </section>
+
+    <footer class="bg-white shadow-md p-4 text-center">
+        <p>&copy; 2025 Your Name. All rights reserved.</p>
+    </footer>
+</body>
+</html>
