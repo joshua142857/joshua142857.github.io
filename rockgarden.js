@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameStatus = document.getElementById("gameStatus");
 
     function renderBoard() {
-        gameBoard.innerHTML = "";
+        gameBoard.innerHTML = ""; // Clear board before re-rendering
+
         for (let x = 0; x < 8; x++) {
             for (let y = 0; y < 8; y++) {
                 const square = document.createElement("div");
@@ -17,20 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 square.dataset.x = x;
                 square.dataset.y = y;
 
+                // Apply color and promotion marker
                 if (board[x][y] === 1) {
-                    square.classList.add("p1"); // Player 1 (Red)
+                    square.classList.add("p1");
                 } else if (board[x][y] === 2) {
-                    square.classList.add("p2"); // Player 2 (Blue)
+                    square.classList.add("p2");
                 } else if (board[x][y] === -1) {
-                    square.classList.add("blocked"); // Blocked area
+                    square.classList.add("blocked");
                 } else if (board[x][y] === -2) {
                     square.classList.add("p1");
-                    drawCircle(square); // Promoted Player 1
+                    drawCircle(square);
                 } else if (board[x][y] === -3) {
                     square.classList.add("p2");
-                    drawCircle(square); // Promoted Player 2
+                    drawCircle(square);
                 }
 
+                // Attach click event for interaction
                 square.addEventListener("click", handleMove);
                 gameBoard.appendChild(square);
             }
@@ -41,13 +44,25 @@ document.addEventListener("DOMContentLoaded", () => {
         const x = parseInt(event.target.dataset.x);
         const y = parseInt(event.target.dataset.y);
 
+        console.log(`Clicked on (${x}, ${y}) - Current state: ${board[x][y]}`);
+
+        // Normal placement of a piece
         if (board[x][y] === 0) {
             board[x][y] = currentPlayer;
+            console.log(`Player ${currentPlayer} placed piece at (${x}, ${y})`);
             currentPlayer = currentPlayer === 1 ? 2 : 1;
-        } else if (board[x][y] === currentPlayer) {
-            board[x][y] = currentPlayer === 1 ? -2 : -3; // Promote piece
+        }
+        // Promotion of an existing piece
+        else if (board[x][y] === currentPlayer) {
+            board[x][y] = currentPlayer === 1 ? -2 : -3;
+            console.log(`Player ${currentPlayer} promoted piece at (${x}, ${y})`);
             blockAdjacent(x, y);
             currentPlayer = currentPlayer === 1 ? 2 : 1;
+        }
+        // Invalid move (ignore)
+        else {
+            console.log("Invalid move!");
+            return;
         }
 
         turnIndicator.textContent = `Player ${currentPlayer}'s Turn`;
@@ -59,8 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function blockAdjacent(x, y) {
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
-                if (x + dx >= 0 && x + dx < 8 && y + dy >= 0 && y + dy < 8 && board[x + dx][y + dy] === 0) {
-                    board[x + dx][y + dy] = -1; // Mark as blocked
+                let nx = x + dx;
+                let ny = y + dy;
+                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && board[nx][ny] === 0) {
+                    board[nx][ny] = -1; // Mark as blocked
                 }
             }
         }
@@ -74,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let p1Score = board.flat().filter(v => v === 1 || v === -2).length;
         let p2Score = board.flat().filter(v => v === 2 || v === -3).length;
         gameStatus.textContent = `Game Over! Player 1: ${p1Score}, Player 2: ${p2Score}`;
+        console.log(`Game Over! Scores - P1: ${p1Score}, P2: ${p2Score}`);
     }
 
     function drawCircle(square) {
@@ -82,5 +100,5 @@ document.addEventListener("DOMContentLoaded", () => {
         square.appendChild(circle);
     }
 
-    renderBoard();
+    renderBoard(); // Initial render
 });
