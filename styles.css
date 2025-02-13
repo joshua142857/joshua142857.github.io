@@ -1,12 +1,4 @@
-body {
-    font-family: "Helvetica", sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-.grid {
+#gameBoard {
     display: grid;
     grid-template-columns: repeat(8, 50px);
     grid-template-rows: repeat(8, 50px);
@@ -36,8 +28,19 @@ body {
     background-color: #4d79ff; /* Blue for Player 2 */
 }
 
-.blocked {
-    background-color: grey; /* Grey for blocked squares */
+/* Blocked squares by Player 1 */
+.blocked-p1 {
+    background-color: #ffcccc; /* Light red */
+}
+
+/* Blocked squares by Player 2 */
+.blocked-p2 {
+    background-color: #ccccff; /* Light blue */
+}
+
+/* Blocked squares by both players */
+.blocked-both {
+    background-color: #bbbbbb; /* Grey */
 }
 
 .promotion-circle {
@@ -50,6 +53,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 /* Cube styling */
 .scene {
     width: 200px;

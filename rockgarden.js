@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameStatus = document.getElementById("gameStatus");
 
     function renderBoard() {
-        gameBoard.innerHTML = ""; // Clear board before re-rendering
+        gameBoard.innerHTML = "";
 
         for (let x = 0; x < 8; x++) {
             for (let y = 0; y < 8; y++) {
@@ -18,22 +18,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 square.dataset.x = x;
                 square.dataset.y = y;
 
-                // Apply color and promotion marker
+                // Player colors
                 if (board[x][y] === 1) {
                     square.classList.add("p1");
                 } else if (board[x][y] === 2) {
                     square.classList.add("p2");
-                } else if (board[x][y] === -1) {
-                    square.classList.add("blocked");
-                } else if (board[x][y] === -2) {
+                }
+                // Promotion markers
+                else if (board[x][y] === -2) {
                     square.classList.add("p1");
                     drawCircle(square);
                 } else if (board[x][y] === -3) {
                     square.classList.add("p2");
                     drawCircle(square);
                 }
+                // Blocking logic: different colors for different players
+                else if (board[x][y] === -1) {
+                    square.classList.add("blocked-p1");
+                } else if (board[x][y] === -4) {
+                    square.classList.add("blocked-p2");
+                } else if (board[x][y] === -5) {
+                    square.classList.add("blocked-both");
+                }
 
-                // Attach click event for interaction
                 square.addEventListener("click", handleMove);
                 gameBoard.appendChild(square);
             }
@@ -56,10 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (board[x][y] === currentPlayer) {
             board[x][y] = currentPlayer === 1 ? -2 : -3;
             console.log(`Player ${currentPlayer} promoted piece at (${x}, ${y})`);
-            blockAdjacent(x, y);
+            blockAdjacent(x, y, currentPlayer);
             currentPlayer = currentPlayer === 1 ? 2 : 1;
         }
-        // Invalid move (ignore)
+        // Invalid move
         else {
             console.log("Invalid move!");
             return;
@@ -71,13 +78,20 @@ document.addEventListener("DOMContentLoaded", () => {
         renderBoard();
     }
 
-    function blockAdjacent(x, y) {
+    function blockAdjacent(x, y, player) {
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
                 let nx = x + dx;
                 let ny = y + dy;
-                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && board[nx][ny] === 0) {
-                    board[nx][ny] = -1; // Mark as blocked
+
+                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                    if (board[nx][ny] === 0) {
+                        board[nx][ny] = player === 1 ? -1 : -4; // Mark as blocked by Player 1 or Player 2
+                    } else if (board[nx][ny] === -1 && player === 2) {
+                        board[nx][ny] = -5; // Both players blocked this square
+                    } else if (board[nx][ny] === -4 && player === 1) {
+                        board[nx][ny] = -5; // Both players blocked this square
+                    }
                 }
             }
         }
@@ -100,5 +114,5 @@ document.addEventListener("DOMContentLoaded", () => {
         square.appendChild(circle);
     }
 
-    renderBoard(); // Initial render
+    renderBoard();
 });
