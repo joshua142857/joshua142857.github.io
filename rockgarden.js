@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("Rock Garden script loaded!");
     const board = Array.from({ length: 8 }, () => Array(8).fill(0));
     let currentPlayer = 1;
 

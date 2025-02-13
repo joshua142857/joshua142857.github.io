@@ -13,6 +13,7 @@ body {
     gap: 2px;
     justify-content: center;
     margin: 20px auto;
+    width: 416px;
 }
 
 .square {
