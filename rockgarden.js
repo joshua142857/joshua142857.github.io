@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 square.dataset.x = x;
                 square.dataset.y = y;
 
-                // Player colors
+                // Player pieces
                 if (board[x][y] === 1) {
                     square.classList.add("p1");
                 } else if (board[x][y] === 2) {
@@ -53,10 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log(`Clicked on (${x}, ${y}) - Current state: ${board[x][y]}`);
 
-        // Check if the square is completely blocked for both players
-        if (board[x][y] === -5 ||
-            (board[x][y] === -1 && currentPlayer === 2) ||
-            (board[x][y] === -4 && currentPlayer === 1)) {
+        // Check if move is allowed
+        if (
+            board[x][y] === -5 || // Fully blocked by both players
+            (board[x][y] === -1 && currentPlayer === 2) || // P2 can't move onto P1's block
+            (board[x][y] === -4 && currentPlayer === 1) // P1 can't move onto P2's block
+        ) {
             console.log("Move not allowed - blocked by opponent!");
             return;
         }
