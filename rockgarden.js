@@ -32,13 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     square.classList.add("p2");
                     drawCircle(square);
                 }
-                // Blocking logic: different colors for different players
+                // Blocking logic: Different colors for different players
                 else if (board[x][y] === -1) {
-                    square.classList.add("blocked-p1");
+                    square.classList.add("blocked-p1"); // Blocked by Player 1 (only Player 2 is blocked)
                 } else if (board[x][y] === -4) {
-                    square.classList.add("blocked-p2");
+                    square.classList.add("blocked-p2"); // Blocked by Player 2 (only Player 1 is blocked)
                 } else if (board[x][y] === -5) {
-                    square.classList.add("blocked-both");
+                    square.classList.add("blocked-both"); // Blocked by both players
                 }
 
                 square.addEventListener("click", handleMove);
@@ -53,8 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log(`Clicked on (${x}, ${y}) - Current state: ${board[x][y]}`);
 
+        // Check if the square is completely blocked for both players
+        if (board[x][y] === -5 ||
+            (board[x][y] === -1 && currentPlayer === 2) ||
+            (board[x][y] === -4 && currentPlayer === 1)) {
+            console.log("Move not allowed - blocked by opponent!");
+            return;
+        }
+
         // Normal placement of a piece
-        if (board[x][y] === 0) {
+        if (board[x][y] === 0 || board[x][y] === -1 || board[x][y] === -4) {
             board[x][y] = currentPlayer;
             console.log(`Player ${currentPlayer} placed piece at (${x}, ${y})`);
             currentPlayer = currentPlayer === 1 ? 2 : 1;
@@ -63,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (board[x][y] === currentPlayer) {
             board[x][y] = currentPlayer === 1 ? -2 : -3;
             console.log(`Player ${currentPlayer} promoted piece at (${x}, ${y})`);
-            blockAdjacent(x, y, currentPlayer);
+            blockOpponentAdjacent(x, y, currentPlayer);
             currentPlayer = currentPlayer === 1 ? 2 : 1;
         }
         // Invalid move
@@ -78,19 +86,20 @@ document.addEventListener("DOMContentLoaded", () => {
         renderBoard();
     }
 
-    function blockAdjacent(x, y, player) {
+    function blockOpponentAdjacent(x, y, player) {
         for (let dx = -1; dx <= 1; dx++) {
             for (let dy = -1; dy <= 1; dy++) {
                 let nx = x + dx;
                 let ny = y + dy;
 
                 if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                    // Block only the opponent
                     if (board[nx][ny] === 0) {
-                        board[nx][ny] = player === 1 ? -1 : -4; // Mark as blocked by Player 1 or Player 2
+                        board[nx][ny] = player === 1 ? -1 : -4; // -1 blocks P2, -4 blocks P1
                     } else if (board[nx][ny] === -1 && player === 2) {
-                        board[nx][ny] = -5; // Both players blocked this square
+                        board[nx][ny] = -5; // Blocked by both players
                     } else if (board[nx][ny] === -4 && player === 1) {
-                        board[nx][ny] = -5; // Both players blocked this square
+                        board[nx][ny] = -5; // Blocked by both players
                     }
                 }
             }
