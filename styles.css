@@ -24,12 +24,73 @@ nav a {
 }
 
 section {
-    height: 100vh; /* Makes each section full screen height */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     border-bottom: 1px solid #ccc;
+}
+
+/* PROJECTS SECTION */
+#projects {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* PROJECT INTRO */
+.projects-intro {
+    height: 25vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+/* INDIVIDUAL PROJECT STYLES */
+.project {
+    width: 100%;
+    height: 50vh; /* Each project takes up half the screen height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    position: relative;
+}
+
+/* TEXT CONTAINERS */
+.project-text {
+    width: 33%;
+    padding: 20px;
+    font-size: 1.5rem;
+}
+
+/* LEFT/RIGHT ALIGNMENT */
+.project-text.left {
+    text-align: right;
+    padding-right: 5%;
+}
+
+.project-text.right {
+    text-align: left;
+    padding-left: 5%;
+}
+
+/* PROJECT TITLE LINK */
+.project-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+.project-title:hover {
+    color: lightgray;
 }
 
 #gameBoard {
