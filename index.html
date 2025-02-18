@@ -3,12 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joshua Cheng Personal Website</title>
+    <title>JC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-100 text-gray-900">
-<!--    <script src="test.js" defer></script>-->
+    <header class="bg-white shadow-md p-4 fixed w-full top-0 z-50">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Your Name</h1>
+            <ul class="flex space-x-6">
+                <li><a href="/" class="hover:text-blue-500">Home</a></li>
+                <li><a href="/about" class="hover:text-blue-500">About</a></li>
+                <li><a href="/projects" class="hover:text-blue-500">Projects</a></li>
+                <li><a href="/contact.html" class="hover:text-blue-500">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <script src="test.js"></script>
     <div class="cube-container">
         <div class="cube">
             <div class="face front"></div>
@@ -22,8 +33,10 @@
 
     <section id="about" class="h-screen flex items-center justify-center">
         <div class="text-center p-6">
-            <h2 class="text-4xl font-bold">Hello, I'm Your Name</h2>
-            <p class="mt-4 text-lg">A passionate developer building awesome projects.</p>
+            <h2 class="text-4xl font-bold">Hi I'm Joshua Cheng</h2>
+            <p class="mt-4 text-lg">I have lots of projects I never end up finishing, so I'm building this site to
+                track my progress and encourage active documentation and completion. I'm interested in many different
+            fields, ranging from computer science to electrical and mechanical engineering. </p>
             <a href="about.html" class="mt-4 inline-block text-blue-500 hover:underline">Learn more about me</a>
         </div>
     </section>
@@ -39,15 +52,13 @@
     <section id="contact" class="h-screen flex items-center justify-center">
         <div class="text-center p-6">
             <h2 class="text-4xl font-bold">Contact</h2>
-            <p class="mt-4 text-lg">Email: your.email@example.com</p>
-            <a href="contact.html" class="mt-4 inline-block text-blue-500 hover:underline">Get in touch</a>
+            <p class="mt-4 text-lg">Email: joshua142857@gmail.com</p>
+            <a href="contact.html" class="mt-4 inline-block text-blue-500 hover:underline">Contact me:</a>
         </div>
     </section>
 
     <footer class="bg-white shadow-md p-4 text-center">
         <p>&copy; 2025 Joshua Cheng. All rights reserved.</p>
     </footer>
-
-    <script src="test.js"></script>
 </body>
 </html>
