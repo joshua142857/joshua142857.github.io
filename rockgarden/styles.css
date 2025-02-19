@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow Semi Condensed:wght@400;700&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    background: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(8, 50px);
+    gap: 2px;
+    justify-content: center;
+    margin: 20px auto;
+    width: 416px;
+}
+
+.square {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.p1 {
+    background-color: #ff4d4d; /* Red for Player 1 */
+}
+
+.p2 {
+    background-color: #4d79ff; /* Blue for Player 2 */
+}
+
+/* Blocked squares by Player 1 */
+.blocked-p1 {
+    background-color: #ffcccc; /* Light red */
+}
+
+/* Blocked squares by Player 2 */
+.blocked-p2 {
+    background-color: #ccccff; /* Light blue */
+}
+
+/* Blocked squares by both players */
+.blocked-both {
+    background-color: #bbbbbb; /* Grey */
+}
+
+.promotion-circle {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
