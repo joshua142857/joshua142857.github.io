@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Garden</title>
+    <title>Rock Garden - Play</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <h1>Rock Garden</h1>
-    <p id="turnIndicator">Player 1's Turn</p>
-    <div id="gameBoard" class="grid"></div>
-    <p id="gameStatus"></p>
-    <script src="rockgarden.js" defer></script>
+    <p>Welcome to Rock Garden! The goal is to have the most pieces at the end. You can promote pieces to block your opponent.</p>
+
+    <h2>Choose Game Mode</h2>
+    <button onclick="startGame('local')">Play Over-the-Board</button>
+    <button onclick="chooseAI()">Play Against AI</button>
+
+    <div id="aiSelection" style="display:none;">
+        <h3>Choose Your Side</h3>
+        <button onclick="startGame('ai-p1')">Play as Player 1</button>
+        <button onclick="startGame('ai-p2')">Play as Player 2</button>
+    </div>
+
+    <script>
+        function chooseAI() {
+            document.getElementById('aiSelection').style.display = 'block';
+        }
+
+        function startGame(mode) {
+            window.location.href = `board.html?mode=${mode}`;
+        }
+    </script>
 </body>
 </html>
