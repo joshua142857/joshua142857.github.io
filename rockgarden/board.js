@@ -1,11 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Rock Garden script loaded!");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const gameMode = urlParams.get("mode");
-    let isAIPlayer1 = (gameMode === "ai-p1");
-    let isAIPlayer2 = (gameMode === "ai-p2");
-
     const board = Array.from({ length: 8 }, () => Array(8).fill(0));
     let currentPlayer = 1;
 
@@ -37,13 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     square.classList.add("p2");
                     drawCircle(square);
                 }
-                // Blocking logic: Different colors for different players
+                // Blocking logic
                 else if (board[x][y] === -1) {
-                    square.classList.add("blocked-p1");
+                    square.classList.add("blocked-p1"); // Blocked by Player 1
                 } else if (board[x][y] === -4) {
-                    square.classList.add("blocked-p2");
+                    square.classList.add("blocked-p2"); // Blocked by Player 2
                 } else if (board[x][y] === -5) {
-                    square.classList.add("blocked-both");
+                    square.classList.add("blocked-both"); // Blocked by both players
                 }
 
                 square.addEventListener("click", handleMove);
@@ -58,86 +53,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log(`Clicked on (${x}, ${y}) - Current state: ${board[x][y]}`);
 
-        if (!isValidMove(x, y)) {
-            console.log("Move not allowed!");
+        if (!isValidMove(x, y, currentPlayer)) {
+            console.log("Invalid move!");
             return;
         }
 
-        applyMove(x, y);
-        switchTurn();
-        renderBoard();
+        let validMove = false;
 
-        if ((isAIPlayer1 && currentPlayer === 1) || (isAIPlayer2 && currentPlayer === 2)) {
-            setTimeout(aiMove, 500);
+        // Normal placement of a piece
+        if (board[x][y] === 0 || board[x][y] === -1 || board[x][y] === -4) {
+            board[x][y] = currentPlayer;
+            validMove = true;
         }
+        // Promotion of an existing piece
+        else if (board[x][y] === currentPlayer) {
+            board[x][y] = currentPlayer === 1 ? -2 : -3;
+            blockOpponentAdjacent(x, y, currentPlayer);
+            validMove = true;
+        }
+
+        if (validMove) {
+            nextTurn();
+        }
+
+        renderBoard();
     }
 
-    function isValidMove(x, y) {
-        return !(
-            board[x][y] === -5 ||
-            (board[x][y] === -1 && currentPlayer === 2) ||
-            (board[x][y] === -4 && currentPlayer === 1)
+    function isValidMove(x, y, player) {
+        return (
+            board[x][y] === 0 ||
+            board[x][y] === player ||
+            (board[x][y] === -1 && player === 1) ||
+            (board[x][y] === -4 && player === 2)
         );
     }
 
-    function applyMove(x, y) {
-        if (board[x][y] === 0 || board[x][y] === -1 || board[x][y] === -4) {
-            board[x][y] = currentPlayer;
-        } else if (board[x][y] === currentPlayer) {
-            board[x][y] = currentPlayer === 1 ? -2 : -3;
-            blockOpponentAdjacent(x, y, currentPlayer);
-        }
-    }
+    function nextTurn() {
+        do {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+        } while (!canPlayerMove(currentPlayer) && !gameOverCheck());
 
-    function switchTurn() {
-        currentPlayer = currentPlayer === 1 ? 2 : 1;
         turnIndicator.textContent = `Player ${currentPlayer}'s Turn`;
-
-        if (noMoreMoves()) endGame();
-    }
-
-    function aiMove() {
-        let bestMove = getAIMove(board, currentPlayer);
-        if (bestMove.row !== -1 && bestMove.col !== -1) {
-            applyMove(bestMove.row, bestMove.col);
-            switchTurn();
-            renderBoard();
-        }
-    }
-
-    function getAIMove(board, currentPlayer) {
-        let bestMove = { row: -1, col: -1 };
-        let maxValue = -Infinity;
-
-        for (let r = 0; r < 8; r++) {
-            for (let c = 0; c < 8; c++) {
-                if (board[r][c] === 0) {
-                    let value = evaluateMove(r, c, board, currentPlayer);
-                    if (value > maxValue) {
-                        maxValue = value;
-                        bestMove = { row: r, col: c };
-                    }
-                }
-            }
-        }
-
-        return bestMove;
-    }
-
-    function evaluateMove(r, c, board, player) {
-        let score = 0;
-
-        for (let dr = -1; dr <= 1; dr++) {
-            for (let dc = -1; dc <= 1; dc++) {
-                let nr = r + dr, nc = c + dc;
-                if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                    if (board[nr][nc] === player) score += 2;
-                    if (board[nr][nc] === 3 - player) score -= 1;
-                }
-            }
-        }
-
-        return score;
     }
 
     function blockOpponentAdjacent(x, y, player) {
@@ -159,8 +115,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function noMoreMoves() {
-        return !board.flat().includes(0);
+    function canPlayerMove(player) {
+        for (let x = 0; x < 8; x++) {
+            for (let y = 0; y < 8; y++) {
+                if (isValidMove(x, y, player)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function gameOverCheck() {
+        if (!canPlayerMove(1) && !canPlayerMove(2)) {
+            endGame();
+            return true;
+        }
+        return false;
     }
 
     function endGame() {
@@ -177,8 +148,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderBoard();
-
-    if (isAIPlayer1) {
-        setTimeout(aiMove, 500);
-    }
 });
