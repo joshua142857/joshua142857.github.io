@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Rock Garden script loaded!");
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameMode = urlParams.get("mode"); // "local", "ai-p1", or "ai-p2"
     const board = Array.from({ length: 8 }, () => Array(8).fill(0));
     let currentPlayer = 1;
 
@@ -18,27 +20,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 square.dataset.x = x;
                 square.dataset.y = y;
 
-                // Player pieces
                 if (board[x][y] === 1) {
                     square.classList.add("p1");
                 } else if (board[x][y] === 2) {
                     square.classList.add("p2");
-                }
-                // Promotion markers
-                else if (board[x][y] === -2) {
+                } else if (board[x][y] === -2) {
                     square.classList.add("p1");
                     drawCircle(square);
                 } else if (board[x][y] === -3) {
                     square.classList.add("p2");
                     drawCircle(square);
-                }
-                // Blocking logic
-                else if (board[x][y] === -1) {
-                    square.classList.add("blocked-p1"); // Blocked by Player 1
+                } else if (board[x][y] === -1) {
+                    square.classList.add("blocked-p1");
                 } else if (board[x][y] === -4) {
-                    square.classList.add("blocked-p2"); // Blocked by Player 2
+                    square.classList.add("blocked-p2");
                 } else if (board[x][y] === -5) {
-                    square.classList.add("blocked-both"); // Blocked by both players
+                    square.classList.add("blocked-both");
                 }
 
                 square.addEventListener("click", handleMove);
@@ -48,35 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleMove(event) {
+        if ((gameMode === "ai-p1" && currentPlayer === 1) || (gameMode === "ai-p2" && currentPlayer === 2)) {
+            return; // Prevent human from playing AI's turn
+        }
+
         const x = parseInt(event.target.dataset.x);
         const y = parseInt(event.target.dataset.y);
 
-        console.log(`Clicked on (${x}, ${y}) - Current state: ${board[x][y]}`);
+        if (!isValidMove(x, y, currentPlayer)) return;
 
-        if (!isValidMove(x, y, currentPlayer)) {
-            console.log("Invalid move!");
-            return;
-        }
-
-        let validMove = false;
-
-        // Normal placement of a piece
-        if (board[x][y] === 0 || board[x][y] === -1 || board[x][y] === -4) {
-            board[x][y] = currentPlayer;
-            validMove = true;
-        }
-        // Promotion of an existing piece
-        else if (board[x][y] === currentPlayer) {
-            board[x][y] = currentPlayer === 1 ? -2 : -3;
-            blockOpponentAdjacent(x, y, currentPlayer);
-            validMove = true;
-        }
-
-        if (validMove) {
-            nextTurn();
-        }
-
+        board[x][y] = currentPlayer;
+        nextTurn();
         renderBoard();
+
+        if (isAITurn()) {
+            setTimeout(aiMove, 500);
+        }
     }
 
     function isValidMove(x, y, player) {
@@ -94,25 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } while (!canPlayerMove(currentPlayer) && !gameOverCheck());
 
         turnIndicator.textContent = `Player ${currentPlayer}'s Turn`;
-    }
-
-    function blockOpponentAdjacent(x, y, player) {
-        for (let dx = -1; dx <= 1; dx++) {
-            for (let dy = -1; dy <= 1; dy++) {
-                let nx = x + dx;
-                let ny = y + dy;
-
-                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
-                    if (board[nx][ny] === 0) {
-                        board[nx][ny] = player === 1 ? -1 : -4;
-                    } else if (board[nx][ny] === -1 && player === 2) {
-                        board[nx][ny] = -5;
-                    } else if (board[nx][ny] === -4 && player === 1) {
-                        board[nx][ny] = -5;
-                    }
-                }
-            }
-        }
     }
 
     function canPlayerMove(player) {
@@ -147,5 +112,67 @@ document.addEventListener("DOMContentLoaded", () => {
         square.appendChild(circle);
     }
 
+    function isAITurn() {
+        return (gameMode === "ai-p1" && currentPlayer === 2) || (gameMode === "ai-p2" && currentPlayer === 1);
+    }
+
+    function aiMove() {
+        let bestMove = null;
+        let bestScore = -Infinity;
+
+        for (let x = 0; x < 8; x++) {
+            for (let y = 0; y < 8; y++) {
+                if (isValidMove(x, y, currentPlayer)) {
+                    let score = evaluateMove(x, y, currentPlayer);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = { x, y };
+                    }
+                }
+            }
+        }
+
+        if (bestMove) {
+            board[bestMove.x][bestMove.y] = currentPlayer;
+            nextTurn();
+            renderBoard();
+        }
+
+        if (!gameOverCheck() && isAITurn()) {
+            setTimeout(aiMove, 500);
+        }
+    }
+
+    function evaluateMove(x, y, player) {
+        let score = 0;
+
+        // Prioritize center squares
+        score += 10 - (Math.abs(x - 3.5) + Math.abs(y - 3.5));
+
+        // Give bonus for blocking opponent
+        if (player === 1) {
+            if (board[x][y] === -4 || board[x][y] === -5) score += 5;
+        } else {
+            if (board[x][y] === -1 || board[x][y] === -5) score += 5;
+        }
+
+        // Bonus for moves that allow future plays
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                let nx = x + dx;
+                let ny = y + dy;
+
+                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8 && board[nx][ny] === 0) {
+                    score += 3;
+                }
+            }
+        }
+
+        return score;
+    }
+
     renderBoard();
+    if (isAITurn()) {
+        setTimeout(aiMove, 500);
+    }
 });
