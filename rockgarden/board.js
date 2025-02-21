@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleMove(event) {
-        if ((gameMode === "ai-p1" && currentPlayer === 1) || (gameMode === "ai-p2" && currentPlayer === 2)) {
+        if ((gameMode === "ai-p1" && currentPlayer === 2) || (gameMode === "ai-p2" && currentPlayer === 1)) {
             return; // Prevent human from playing AI's turn
         }
 
