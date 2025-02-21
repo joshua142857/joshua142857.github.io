@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const gameMode = urlParams.get("mode"); // "local", "ai-p1", or "ai-p2"
+
     const board = Array.from({ length: 8 }, () => Array(8).fill(0));
     let currentPlayer = 1;
 
@@ -20,17 +21,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 square.dataset.x = x;
                 square.dataset.y = y;
 
+                // Player pieces
                 if (board[x][y] === 1) {
                     square.classList.add("p1");
                 } else if (board[x][y] === 2) {
                     square.classList.add("p2");
-                } else if (board[x][y] === -2) {
+                }
+                // Promotion markers
+                else if (board[x][y] === -2) {
                     square.classList.add("p1");
                     drawCircle(square);
                 } else if (board[x][y] === -3) {
                     square.classList.add("p2");
                     drawCircle(square);
-                } else if (board[x][y] === -1) {
+                }
+                // Blocking logic
+                else if (board[x][y] === -1) {
                     square.classList.add("blocked-p1");
                 } else if (board[x][y] === -4) {
                     square.classList.add("blocked-p2");
@@ -52,62 +58,66 @@ document.addEventListener("DOMContentLoaded", () => {
         const x = parseInt(event.target.dataset.x);
         const y = parseInt(event.target.dataset.y);
 
-        if (!isValidMove(x, y, currentPlayer)) return;
+        console.log(`Clicked on (${x}, ${y}) - Current state: ${board[x][y]}`);
 
-        board[x][y] = currentPlayer;
-        if (canPromote(x, y, currentPlayer)) {
-            board[x][y] = currentPlayer === 1 ? -2 : -3; // Promote the piece
+        // Check if move is allowed
+        if (
+            board[x][y] === -5 ||
+            (board[x][y] === -1 && currentPlayer === 2) ||
+            (board[x][y] === -4 && currentPlayer === 1)
+        ) {
+            console.log("Move not allowed - blocked by opponent!");
+            return;
         }
 
-        nextTurn();
+        // Normal placement of a piece
+        if (board[x][y] === 0 || board[x][y] === -1 || board[x][y] === -4) {
+            board[x][y] = currentPlayer;
+            console.log(`Player ${currentPlayer} placed piece at (${x}, ${y})`);
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+        }
+        // Promotion of an existing piece
+        else if (board[x][y] === currentPlayer) {
+            board[x][y] = currentPlayer === 1 ? -2 : -3;
+            console.log(`Player ${currentPlayer} promoted piece at (${x}, ${y})`);
+            blockOpponentAdjacent(x, y, currentPlayer);
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+        } else {
+            console.log("Invalid move!");
+            return;
+        }
+
+        turnIndicator.textContent = `Player ${currentPlayer}'s Turn`;
+
+        if (noMoreMoves()) endGame();
         renderBoard();
 
-        if (!gameOverCheck() && isAITurn()) {
+        if (!noMoreMoves() && isAITurn()) {
             setTimeout(aiMove, 500);
         }
     }
 
-    function isValidMove(x, y, player) {
-        return (
-            board[x][y] === 0 ||
-            (board[x][y] === -1 && player === 1) ||
-            (board[x][y] === -4 && player === 2) ||
-            (player === 1 && board[x][y] === -2) ||
-            (player === 2 && board[x][y] === -3)
-        );
-    }
+    function blockOpponentAdjacent(x, y, player) {
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                let nx = x + dx;
+                let ny = y + dy;
 
-    function canPromote(x, y, player) {
-        return (player === 1 && y === 7) || (player === 2 && y === 0);
-    }
-
-    function nextTurn() {
-        let previousPlayer = currentPlayer;
-        do {
-            currentPlayer = currentPlayer === 1 ? 2 : 1;
-            if (gameOverCheck()) return;
-        } while (!canPlayerMove(currentPlayer) && currentPlayer !== previousPlayer);
-
-        turnIndicator.textContent = `Player ${currentPlayer}'s Turn`;
-    }
-
-    function canPlayerMove(player) {
-        for (let x = 0; x < 8; x++) {
-            for (let y = 0; y < 8; y++) {
-                if (isValidMove(x, y, player)) {
-                    return true;
+                if (nx >= 0 && nx < 8 && ny >= 0 && ny < 8) {
+                    if (board[nx][ny] === 0) {
+                        board[nx][ny] = player === 1 ? -1 : -4;
+                    } else if (board[nx][ny] === -1 && player === 2) {
+                        board[nx][ny] = -5;
+                    } else if (board[nx][ny] === -4 && player === 1) {
+                        board[nx][ny] = -5;
+                    }
                 }
             }
         }
-        return false;
     }
 
-    function gameOverCheck() {
-        if (!canPlayerMove(1) && !canPlayerMove(2)) {
-            endGame();
-            return true;
-        }
-        return false;
+    function noMoreMoves() {
+        return !board.flat().includes(0);
     }
 
     function endGame() {
@@ -132,20 +142,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (bestMove) {
             board[bestMove.x][bestMove.y] = currentPlayer;
-            if (canPromote(bestMove.x, bestMove.y, currentPlayer)) {
-                board[bestMove.x][bestMove.y] = currentPlayer === 1 ? -2 : -3;
-            }
-            nextTurn();
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
             renderBoard();
         }
 
-        if (!gameOverCheck() && isAITurn()) {
+        if (!noMoreMoves() && isAITurn()) {
             setTimeout(aiMove, 500);
         }
     }
 
     function minimax(board, depth, isMaximizing) {
-        if (depth === 0 || gameOverCheck()) {
+        if (depth === 0 || noMoreMoves()) {
             return { score: evaluateBoard(board) };
         }
 
@@ -154,9 +161,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for (let x = 0; x < 8; x++) {
             for (let y = 0; y < 8; y++) {
-                if (isValidMove(x, y, currentPlayer)) {
+                if (board[x][y] === 0 || board[x][y] === -1 || board[x][y] === -4) {
                     let temp = board[x][y];
-                    board[x][y] = currentPlayer;
+                    board[x][y] = isMaximizing ? 2 : 1;
                     let score = minimax(board, depth - 1, !isMaximizing).score;
                     board[x][y] = temp;
 
@@ -181,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function evaluateBoard(board) {
         let p1Score = board.flat().filter(v => v === 1 || v === -2).length;
         let p2Score = board.flat().filter(v => v === 2 || v === -3).length;
-        return p1Score - p2Score; // AI prefers higher scores
+        return p2Score - p1Score; // AI favors maximizing its score
     }
 
     renderBoard();
