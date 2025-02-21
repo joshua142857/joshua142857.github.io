@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function handleMove(event) {
         if ((gameMode === "ai-p1" && currentPlayer === 2) || (gameMode === "ai-p2" && currentPlayer === 1)) {
+            console.log(currentPlayer)
             return; // Prevent human from playing AI's turn
         }
 
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         nextTurn();
         renderBoard();
 
-        if (isAITurn()) {
+        if (!gameOverCheck() && isAITurn()) {
             setTimeout(aiMove, 500);
         }
     }
