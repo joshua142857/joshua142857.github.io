@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function noMoreMoves() {
-        return !board.flat().includes(0);
+        return !board.flat().includes(0) && !board.flat().includes(-1) && !board.flat().includes(-4);
     }
 
     function endGame() {
