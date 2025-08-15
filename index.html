@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>About Me</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="style.css" rel="stylesheet">
   <link rel="preload" as="font" href="/Sentient-Regular.woff2" crossorigin>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
   <header class="bg-white text-blue dark:bg-gray-900 dark:text-white shadow-md p-4 fixed w-full top-0 z-50">
     <a href="/projects/" class="hover:text-blue-500">Projects</a>
     <a href="/resume.pdf" class="hover:text-blue-500">CV</a>
@@ -15,12 +16,16 @@
       <span id="theme-icon">🌙</span>
     </button>
   </header>
-  <main>
+  <section class="h-screen bg-gray-200 flex items-center justify-center">
     <div id="pfp" aria-label="pfp">
-
     </div>
-  </main>
-
+    <div class="text-center p-6">
+        <p>Hello World</p>
+    </div>
+  </section>
+  <footer class="bg-white shadow-md p-4 text-center">
+    <p>&copy; 2025 Joshua Cheng. All rights reserved.</p>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
