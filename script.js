@@ -13,21 +13,3 @@ themeToggle.addEventListener("click", () => {
   }
 });
 
-// Draw pattern on canvas
-const canvas = document.getElementById("patternCanvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = 400;
-canvas.height = 400;
-
-function drawPattern() {
-  const patternSize = 40;
-  for (let x = 0; x < canvas.width; x += patternSize) {
-    for (let y = 0; y < canvas.height; y += patternSize) {
-      ctx.fillStyle = (x / patternSize + y / patternSize) % 2 === 0 ? "#000" : "#fff";
-      ctx.fillRect(x, y, patternSize, patternSize);
-    }
-  }
-}
-
-drawPattern();
