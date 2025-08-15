@@ -1,168 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;700&display=swap');
-
-html {
-    scroll-behavior: smooth;
+/* Base reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Default theme (light) */
 body {
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    margin: 0;
-    padding: 0;
-    background-color: #121212; /* Dark background */
-    color: #E0E0E0; /* Light text */
+  font-family: Arial, sans-serif;
+  color: #000;
+  background: linear-gradient(to bottom, gray, lightblue);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
-    position: fixed;
-    width: 100%;
-    background: #1E1E1E; /* Darker header */
-    padding: 10px 0;
-    text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
 }
 
-nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #E0E0E0; /* Light text */
-    font-size: 18px;
+#theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
 }
 
-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-bottom: 1px solid #333; /* Dark border */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* PROJECTS SECTION */
-#projects {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+canvas {
+  border: 1px solid #ccc;
 }
 
-/* PROJECT INTRO */
-.projects-intro {
-    height: 25vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    font-weight: bold;
-}
-
-/* INDIVIDUAL PROJECT STYLES */
-.project {
-    width: 100%;
-    height: 50vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-size: cover;
-    background-position: center;
-    color: white;
-    position: relative;
-}
-
-/* FADE-IN TEXT EFFECT */
-.project-text {
-    width: 33%;
-    padding: 20px;
-    font-size: 1.5rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.project-text.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* LEFT/RIGHT ALIGNMENT */
-.project-text.left {
-    text-align: right;
-    padding-right: 5%;
-}
-
-.project-text.right {
-    text-align: left;
-    padding-left: 5%;
-}
-
-/* PROJECT TITLE LINK */
-.project-title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: #FFD700; /* Gold for visibility */
-    transition: color 0.3s;
-}
-
-.project-title:hover {
-    color: #FFAA00;
-}
-
-/* GAME BOARD */
-#gameBoard {
-    display: grid;
-    grid-template-columns: repeat(8, 50px);
-    grid-template-rows: repeat(8, 50px);
-    gap: 2px;
-    justify-content: center;
-    margin: 20px auto;
-    width: 416px;
-    background-color: #222; /* Darker board */
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.square {
-    width: 50px;
-    height: 50px;
-    border: 1px solid #666;
-    background-color: #333; /* Darker squares */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: relative;
-}
-
-/* Player Colors */
-.p1 {
-    background-color: #E74C3C; /* Red for Player 1 */
-}
-
-.p2 {
-    background-color: #3498DB; /* Blue for Player 2 */
-}
-
-/* Blocked squares */
-.blocked-p1 {
-    background-color: #8B0000; /* Darker red */
-}
-
-.blocked-p2 {
-    background-color: #00008B; /* Darker blue */
-}
-
-.blocked-both {
-    background-color: #555; /* Neutral dark */
-}
-
-/* Promotion marker */
-.promotion-circle {
-    width: 60%;
-    height: 60%;
-    border-radius: 50%;
-    background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* Dark mode */
+body.dark-mode {
+  color: #fff;
+  background: linear-gradient(to bottom, gray, darkblue);
 }

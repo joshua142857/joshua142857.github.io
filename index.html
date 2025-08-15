@@ -1,101 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="transition-colors duration-700">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Personal Website</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Smooth gradient background for dark/light mode */
-    .dark-mode-transition {
-      background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
-      transition: background 0.7s ease, color 0.7s ease;
-    }
-    .dark .dark-mode-transition {
-      background: linear-gradient(to bottom right, #1f2937, #111827);
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Display with Dark/Light Mode</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-mode-transition text-gray-900 dark:text-gray-100 min-h-screen">
-
-  <!-- HEADER -->
-  <header class="relative overflow-hidden">
-    <div class="flex justify-between items-center px-6 py-4">
-      <!-- Navigation -->
-      <nav class="space-x-6 font-semibold">
-        <a href="#home" class="text-gray-800 dark:text-gray-200 hover:text-blue-500">Home</a>
-        <a href="#projects" class="text-gray-800 dark:text-gray-200 hover:text-blue-500">Projects</a>
-        <a href="#cv" class="text-gray-800 dark:text-gray-200 hover:text-blue-500">CV</a>
-      </nav>
-
-      <!-- Dark Mode Toggle Button -->
-      <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 transition-colors duration-300">
-        <!-- Moon Icon -->
-        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:hidden" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M21.64 13.02A9 9 0 1111 2.36 7 7 0 1021.64 13z"/>
-        </svg>
-        <!-- Sun Icon -->
-        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400 hidden dark:block" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m15.364-6.364l1.414-1.414M4.222 19.778l1.414-1.414m0-13.728L4.222 4.222m15.142 15.142l-1.414-1.414M12 6a6 6 0 100 12 6 6 0 000-12z"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Wave Pattern -->
-    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
-      <path fill="currentColor" class="text-blue-500 dark:text-blue-700" 
-        d="M0,64L48,58.7C96,53,192,43,288,69.3C384,96,480,160,576,165.3C672,171,768,117,864,85.3C960,53,1056,43,1152,53.3C1248,64,1344,96,1392,112L1440,128L1440,0L0,0Z" />
-    </svg>
+<body>
+  <header>
+    <h1>Pattern Display</h1>
+    <button id="theme-toggle" aria-label="Toggle Dark Mode">
+      <span id="theme-icon">🌙</span>
+    </button>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="px-6 py-12 space-y-12">
-
-    <!-- ABOUT ME SECTION -->
-    <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-      <!-- Profile Placeholder -->
-      <div class="flex-shrink-0 w-48 h-64 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-      
-      <!-- About Text -->
-      <div>
-        <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">About Me</h2>
-        <p class="mb-2 text-gray-700 dark:text-gray-200">Hi, I'm [Your Name] — who am I?</p>
-        <p class="text-gray-700 dark:text-gray-200">These are my interests and passions...</p>
-        <!-- Social Links -->
-        <div class="flex gap-4 mt-4">
-          <a href="https://github.com" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">GitHub</a>
-          <a href="https://linkedin.com" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">LinkedIn</a>
-          <a href="https://instagram.com" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">Instagram</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROJECT UPDATES -->
-    <section id="projects" class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-colors duration-700">
-      <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Project Updates</h2>
-      <ul class="space-y-2">
-        <li class="text-gray-800 dark:text-gray-200">
-          <span class="font-semibold">6/7/20</span> — 
-          <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">Blog Link</a> 
-          Short description
-        </li>
-        <li class="text-gray-800 dark:text-gray-200">
-          <span class="font-semibold">8/9/20</span> — 
-          <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">Blog Link</a> 
-          Short description
-        </li>
-      </ul>
-    </section>
-
+  <main>
+    <canvas id="patternCanvas"></canvas>
   </main>
 
-  <!-- Dark Mode Script -->
-  <script>
-    const toggle = document.getElementById('darkModeToggle');
-    toggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-    });
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
