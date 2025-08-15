@@ -1,79 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition-colors duration-700">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JC</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Website</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Smooth gradient transition for dark mode */
+    .dark-mode-transition {
+      background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
+      transition: background 0.7s ease;
+    }
+    .dark .dark-mode-transition {
+      background: linear-gradient(to bottom right, #1f2937, #111827);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <header class="bg-white shadow-md p-4 fixed w-full top-0 z-50">
-        <nav class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Joshua Cheng Personal Website</h1>
-            <ul class="flex space-x-6">
-                <a href="#about" class="hover:text-blue-500">About</a>
-                <a href="#projects" class="hover:text-blue-500">Projects</a>
-                <a href="#contact" class="hover:text-blue-500">Contact</a>
-            </ul>
-        </nav>
-    </header>
-    <script src="test.js"></script>
+<body class="dark-mode-transition text-gray-900 dark:text-gray-100">
 
-    <section id="about" class="h-screen flex items-center justify-center">
-        <div class="text-center p-6">
-            <h2 class="text-4xl font-bold">Hi I'm Joshua Cheng</h2>
-            <p class="mt-4 text-lg">I have lots of projects I never end up finishing, so I'm building this site to
-                track my progress and encourage active documentation and completion. I'm interested in many different
-            fields, ranging from computer science to electrical and mechanical engineering. </p>
-            <a href="#about" class="mt-4 inline-block text-blue-500 hover:underline">Learn more about me</a>
+  <!-- Header -->
+  <header class="relative overflow-hidden">
+    <div class="flex justify-between items-center px-6 py-4">
+      <nav class="space-x-6 font-semibold">
+        <a href="#home" class="hover:text-blue-500">Home</a>
+        <a href="#projects" class="hover:text-blue-500">Projects</a>
+        <a href="#cv" class="hover:text-blue-500">CV</a>
+      </nav>
+      <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 transition-colors duration-300">
+        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M21.64 13.02A9 9 0 1111 2.36 7 7 0 1021.64 13z"/></svg>
+        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m15.364-6.364l1.414-1.414M4.222 19.778l1.414-1.414m0-13.728L4.222 4.222m15.142 15.142l-1.414-1.414M12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>
+      </button>
+    </div>
+    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path fill="currentColor" class="text-blue-500 dark:text-blue-700" d="M0,64L48,58.7C96,53,192,43,288,69.3C384,96,480,160,576,165.3C672,171,768,117,864,85.3C960,53,1056,43,1152,53.3C1248,64,1344,96,1392,112L1440,128L1440,0L0,0Z" />
+    </svg>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-6 py-12 space-y-12">
+
+    <!-- Top Section -->
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+      <div class="flex-shrink-0 w-48 h-64 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
+      <div>
+        <h2 class="text-2xl font-bold mb-4">About Me</h2>
+        <p class="mb-2">Hi, I'm [Your Name] — who am I?</p>
+        <p>These are my interests and passions...</p>
+        <div class="flex gap-4 mt-4">
+          <a href="https://github.com" class="hover:text-blue-500">GitHub</a>
+          <a href="https://linkedin.com" class="hover:text-blue-500">LinkedIn</a>
+          <a href="https://instagram.com" class="hover:text-blue-500">Instagram</a>
         </div>
+      </div>
+    </div>
+
+    <!-- Project Updates -->
+    <section id="projects" class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-colors duration-700">
+      <h2 class="text-xl font-semibold mb-4">Project Updates</h2>
+      <ul class="space-y-2">
+        <li><span class="font-semibold">6/7/20</span> — <a href="#" class="text-blue-500">Blog Link</a> Short description</li>
+        <li><span class="font-semibold">8/9/20</span> — <a href="#" class="text-blue-500">Blog Link</a> Short description</li>
+      </ul>
     </section>
 
-    <section id="projects">
-    <div class="projects-intro">
-        <h1>Projects</h1>
-    </div>
+  </main>
 
-    <div class="project" style="background-image: url('rockgarden/rockgarden-scrn.png');">
-        <div class="project-text left">
-            <a href="/rockgarden/" class="project-title">Rock Garden</a>
-        </div>
-        <div class="project-text right">
-            <p>Implementation of a novel board game designed by Sanjay Kandadi. Possible future work include designing AI
-            to play the game, as well as determining game solvability.</p>
-        </div>
-    </div>
+  <!-- Dark Mode Script -->
+  <script>
+    const toggle = document.getElementById('darkModeToggle');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
 
-    <div class="project" style="background-image: url('https://via.placeholder.com/1200');">
-        <div class="project-text left">
-            <p>This is a short description of Project 2.</p>
-        </div>
-        <div class="project-text right">
-            <a href="project2.html" class="project-title">Project 2</a>
-        </div>
-    </div>
-
-    <div class="project" style="background-image: url('https://via.placeholder.com/1200');">
-        <div class="project-text left">
-            <a href="project3.html" class="project-title">Project 3</a>
-        </div>
-        <div class="project-text right">
-            <p>This is a short description of Project 3.</p>
-        </div>
-    </div>
-    </section>
-
-    <section id="contact" class="h-screen flex items-center justify-center">
-        <div class="text-center p-6">
-            <h2 class="text-4xl font-bold">Contact</h2>
-            <p class="mt-4 text-lg">Email: joshua142857@gmail.com</p>
-            <a href="contact.html" class="mt-4 inline-block text-blue-500 hover:underline">Contact me:</a>
-        </div>
-    </section>
-
-    <footer class="bg-white shadow-md p-4 text-center">
-        <p>&copy; 2025 Joshua Cheng. All rights reserved.</p>
-    </footer>
+    toggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      moonIcon.classList.toggle('hidden');
+      sunIcon.classList.toggle('hidden');
+    });
+  </script>
 </body>
 </html>
